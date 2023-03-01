@@ -36,7 +36,7 @@ public class Plane implements Geometry {
      */
     public Plane(Point p, Vector v) {
         p0 = p;
-        normal = v;
+        normal = v.normalize();
     }
 
     /**
