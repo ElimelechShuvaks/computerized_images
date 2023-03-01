@@ -1,11 +1,12 @@
 package primitives;
 
-import java.util.Objects;
-
 /**
  * Class for representing a point in space
  */
 public class Point {
+    /**
+     * An instance of Double3 that contains the coordinate values
+     */
     final Double3 xyz;
 
     /**
@@ -66,12 +67,13 @@ public class Point {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Point p)) return false;
-        return Objects.equals(xyz.d1, p.xyz.d1) && Objects.equals(xyz.d2, p.xyz.d2) && Objects.equals(xyz.d3, p.xyz.d3);
+        if ((obj instanceof Point p))
+            return xyz.equals(p.xyz);
+        return false;
     }
 
     @Override
     public String toString() {
-        return "(" + xyz.d1 + "," + xyz.d2 + "," + xyz.d3 + ")";
+        return xyz.toString();
     }
 }
