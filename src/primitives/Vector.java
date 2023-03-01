@@ -40,7 +40,7 @@ public class Vector extends Point {
      * @return new Vector
      */
     public Vector add(Vector v) {
-
+        return new Vector(xyz.add(v.xyz));
     }
 
     /**
@@ -50,7 +50,7 @@ public class Vector extends Point {
      * @return new Vector
      */
     public Vector scale(double d) {
-
+        return new Vector(xyz.scale(d));
     }
 
     /**
@@ -60,7 +60,9 @@ public class Vector extends Point {
      * @return new Vector
      */
     public Vector crossProduct(Vector v) {
-
+        return new Vector(xyz.d2 * v.xyz.d3 - xyz.d3 * v.xyz.d2,
+                xyz.d3 * v.xyz.d1 - xyz.d1 * v.xyz.d3,
+                xyz.d1 * v.xyz.d2 - xyz.d2 * v.xyz.d1);
     }
 
     /**
@@ -69,7 +71,7 @@ public class Vector extends Point {
      * @return the rezolte number
      */
     public double lengthSquared() {
-
+        return dotProduct(this);
     }
 
     /**
@@ -78,7 +80,7 @@ public class Vector extends Point {
      * @return
      */
     public double length() {
-
+        return Math.sqrt(dotProduct(this));
     }
 
     /**
@@ -87,7 +89,7 @@ public class Vector extends Point {
      * @return
      */
     public Vector normalize() {
-
+        return scale(1 / length());
     }
 
     /**
@@ -97,7 +99,7 @@ public class Vector extends Point {
      * @return the rezolte number
      */
     public double dotProduct(Vector v) {
-
+        return (xyz.d1 * v.xyz.d1 + xyz.d2 * v.xyz.d2 + xyz.d3 * v.xyz.d3);
     }
 
     @Override
