@@ -3,6 +3,10 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * Class Sphere is the basic class representing a sphere in the
+ * Three-dimensional space.
+ */
 public class Sphere extends RadialGeometry {
     private Point center;
 
@@ -16,7 +20,7 @@ public class Sphere extends RadialGeometry {
         super(radius);
         this.center = center;
     }
-    
+
     /**
      * Getter
      *
