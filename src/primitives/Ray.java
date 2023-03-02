@@ -5,13 +5,7 @@ package primitives;
  */
 public class Ray {
 
-    /**
-     * Start of the ray
-     */
     private final Point p0;
-    /**
-     * the direction of the ray
-     */
     private final Vector dir;
 
     /**

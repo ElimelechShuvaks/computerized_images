@@ -31,7 +31,7 @@ public class Plane implements Geometry {
     /**
      * Build a Plane by point and normal vector.
      *
-     * @param p0
+     * @param p
      * @param v
      */
     public Plane(Point p, Vector v) {
