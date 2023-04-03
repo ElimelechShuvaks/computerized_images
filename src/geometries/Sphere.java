@@ -8,14 +8,11 @@ import primitives.Vector;
  * Three-dimensional space.
  */
 public class Sphere extends RadialGeometry {
-    private Point center;
+    private final Point center;
 
-    /**
-     * constructor.
-     *
-     * @param radius
-     * @param center
-     */
+    /** Constructor to initialize Tube based on radius and direction
+     * @param radius the radius length
+     * @param center the central point of the tube*/
     public Sphere(double radius, Point center) {
         super(radius);
         this.center = center;

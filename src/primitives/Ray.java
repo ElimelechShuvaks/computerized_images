@@ -8,12 +8,9 @@ public class Ray {
     private final Point p0;
     private final Vector dir;
 
-    /**
-     * constratot with tow parameters, point and vector.
-     *
-     * @param p
-     * @param v
-     */
+    /** Constructor to initialize Ray base on start point and direction
+     * @param p the start point
+     * @param v the direction*/
     public Ray(Point p, Vector v) {
         this.p0 = p;
         this.dir = v.normalize();
@@ -48,6 +45,6 @@ public class Ray {
 
     @Override
     public String toString() {
-        return "Ray - " + p0.toString() + " + " + dir.toString();
+        return "Ray - " + p0 + " + " + dir;
     }
 }

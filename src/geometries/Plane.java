@@ -8,8 +8,8 @@ import primitives.Vector;
  */
 public class Plane implements Geometry {
 
-    private Point p0;
-    private Vector normal;
+    private final Point p0;
+    private final Vector normal;
 
     @Override
     public Vector getNormal(Point p) {
@@ -17,23 +17,20 @@ public class Plane implements Geometry {
     }
 
     /**
-     * Build a Plane by 3 Points.
+     * Constructor to initialize Plane based on three points
      *
-     * @param p0
-     * @param p1
-     * @param p2
+     * @param p0 first point on the plane
+     * @param p1 second point on the plane
+     * @param p2 third point on the plane
      */
     public Plane(Point p0, Point p1, Point p2) {
         this.p0 = p0;
         normal = null;
     }
 
-    /**
-     * Build a Plane by point and normal vector.
-     *
-     * @param p
-     * @param v
-     */
+    /** Constructor to initialize Plane based on the normal to the plane and point on the plane
+     * @param p point on the plane
+     * @param v the normal to the plane*/
     public Plane(Point p, Vector v) {
         p0 = p;
         normal = v.normalize();

@@ -10,7 +10,7 @@ import primitives.Vector;
  */
 public class Cylinder extends Tube {
 
-    private double height;
+    private final double height;
 
     /**
      * Getter
@@ -21,13 +21,10 @@ public class Cylinder extends Tube {
         return height;
     }
 
-    /**
-     * constructor.
-     *
-     * @param radius
-     * @param axisRay
-     * @param height
-     */
+    /** Constructor to initialize Cylinder based on radius, the center axis and height
+     * @param radius first number value
+     * @param axisRay second number value
+     * @param height third number value */
     public Cylinder(double radius, Ray axisRay, double height) {
         super(radius, axisRay);
         this.height = height;
