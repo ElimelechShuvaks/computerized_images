@@ -13,12 +13,13 @@ public class Tube extends RadialGeometry {
     /**
      * the Ray of the tube.
      */
-    protected Ray axisRay;
+    protected final Ray axisRay;
 
     /**
-     * constructor.
-     * @param radius
-     * @param axisRay
+     * Constructor to initialize Tube based on radius and direction
+     *
+     * @param radius the radius length
+     * @param axisRay the central axis of the Tube
      */
     public Tube(double radius, Ray axisRay) {
         super(radius);

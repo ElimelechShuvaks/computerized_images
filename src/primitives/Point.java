@@ -28,7 +28,7 @@ public class Point {
      * the action
      *
      * @param p second point
-     * @return returns a vector
+     * @return a vector
      */
     public Vector subtract(Point p) {
         return new Vector(xyz.subtract(p.xyz));
@@ -37,7 +37,7 @@ public class Point {
     /**
      * Adding a vector to a point – returns a new point
      *
-     * @param vector to addition
+     * @param v to addition
      * @return returns a new point
      */
     public Point add(Vector v) {
@@ -61,19 +61,20 @@ public class Point {
      * @return the distance in square
      */
     public double distanceSquared(Point p) {
-        return (xyz.d1 - p.xyz.d1) * (xyz.d1 - p.xyz.d1) + (xyz.d2 - p.xyz.d2) * (xyz.d2 - p.xyz.d2) + (xyz.d3 - p.xyz.d3) * (xyz.d3 - p.xyz.d3);
+        double dx = xyz.d1 - p.xyz.d1;
+        double dy = xyz.d2 - p.xyz.d2;
+        double dz = xyz.d3 - p.xyz.d3;
+        return dx * dx + dy * dy + dz * dz;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if ((obj instanceof Point p))
-            return xyz.equals(p.xyz);
-        return false;
+        return (obj instanceof Point p) && xyz.equals(p.xyz);
     }
 
     @Override
     public String toString() {
-        return xyz.toString();
+        return "" + xyz;
     }
 }
