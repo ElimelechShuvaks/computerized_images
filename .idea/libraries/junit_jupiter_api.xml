@@ -1,12 +1,14 @@
 <component name="libraryTable">
   <library name="junit.jupiter.api" type="repository">
-    <properties maven-id="org.junit.jupiter:junit-jupiter-api:5.0.0" />
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.0.0/junit-jupiter-api-5.0.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.0.0/opentest4j-1.0.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.0.0/junit-platform-commons-1.0.0.jar!/" />
-    </CLASSES>
+    <properties maven-id="org.junit.jupiter:junit-jupiter-api:5.9.2">
+      <exclude>
+        <dependency maven-id="org.apiguardian:apiguardian-api" />
+        <dependency maven-id="org.junit.jupiter:junit-jupiter-api" />
+        <dependency maven-id="org.junit.platform:junit-platform-commons" />
+        <dependency maven-id="org.opentest4j:opentest4j" />
+      </exclude>
+    </properties>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>
