@@ -13,7 +13,7 @@ public class Plane implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        return normal;
     }
 
     /**
@@ -25,7 +25,9 @@ public class Plane implements Geometry {
      */
     public Plane(Point p0, Point p1, Point p2) {
         this.p0 = p0;
-        normal = null;
+        Vector v1 = p1.subtract(p2);
+        Vector v2 = p0.subtract(p1);
+        normal = v1.crossProduct(v2).normalize();
     }
 
     /** Constructor to initialize Plane based on the normal to the plane and point on the plane
