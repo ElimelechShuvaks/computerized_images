@@ -27,6 +27,27 @@ class VectorTest {
     }
 
     /**
+     * Test method for {@link primitives.Vector#subtract(primitives.Vector)}.
+     */
+    @Test
+    void subtract() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01 - normal test case
+        Vector v1 = new Vector(1, 2, 3);
+        Vector v2 = new Vector(2, 3, 4);
+        Vector v3 = v1.subtract(v2);
+        assertEquals(new Vector(-1, -1, -1), v3, "subtract() wrong result");
+
+        // TC02 - test case for negative number
+        Vector v4 = v1.subtract(new Vector(-2, -3, -4));
+        assertEquals(new Vector(3, 5, 7), v4, "subtract() wrong result");
+
+        // =============== Boundary Values Tests ==================
+        // TC03 - test case for zero vector
+        assertThrows(IllegalArgumentException.class, () -> v1.subtract(new Vector(1, 2, 3)), "subtract() for zero vector does not throw an exception");
+    }
+
+    /**
      * Test method for {@link Vector#scale(double)}.
      */
     @Test
@@ -63,8 +84,8 @@ class VectorTest {
         assertEquals(v1.length() * v2.length(), vr.length(), 0.00001, "crossProduct() wrong result length");
 
         // TC02: Test cross-product result orthogonality to its operands
-        assertTrue(Util.isZero(vr.dotProduct(v1)), "crossProduct() result is not orthogonal to 1st operand");
-        assertTrue(Util.isZero(vr.dotProduct(v2)), "crossProduct() result is not orthogonal to 2nd operand");
+        assertEquals(0, vr.dotProduct(v1), 0.00001, "crossProduct() result is not orthogonal to 1st operand");
+        assertEquals(0, vr.dotProduct(v2), 0.00001, "crossProduct() result is not orthogonal to 1st operand");
 
         // =============== Boundary Values Tests ==================
         // TC03: test zero vector from cross-product of co-lined vectors
@@ -133,6 +154,6 @@ class VectorTest {
         // =============== Boundary Values Tests ==================
         // TC03 - test case for orthogonal vectors
         Vector v3 = new Vector(0, 3, -2);
-        assertTrue(Util.isZero(v1.dotProduct(v3)), "dotProduct() of orthogonal vectors is not zero");
+        assertEquals(0, v1.dotProduct(v3), 0.00001, "dotProduct() of orthogonal vectors is not zero");
     }
 }
