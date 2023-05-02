@@ -1,17 +1,13 @@
 package geometries;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static primitives.Util.isZero;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import geometries.Polygon;
-import primitives.Point;
-import primitives.Vector;
+import geometries.*;
+import primitives.*;
 
 /**
  * Testing Polygons
@@ -28,11 +24,11 @@ public class PolygonTest {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Correct concave quadrangular with vertices in correct order
-        try {
-            new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1));
-        } catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct polygon");
-        }
+        assertDoesNotThrow(() -> new Polygon(new Point(0, 0, 1),
+                        new Point(1, 0, 0),
+                        new Point(0, 1, 0),
+                        new Point(-1, 1, 1)),
+                "Failed constructing a correct polygon");
 
         // TC02: Wrong vertices order
         assertThrows(IllegalArgumentException.class, //
@@ -88,7 +84,9 @@ public class PolygonTest {
         assertEquals(1, result.length(), 0.00000001, "Polygon's normal is not a unit vector");
         // ensure the result is orthogonal to all the edges
         for (int i = 0; i < 3; ++i)
-            assertTrue(isZero(result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1]))),
+            assertEquals(0d,
+                    result.dotProduct(pts[i].subtract(pts[i == 0 ? 3 : i - 1])),
+                    0.0000001,
                     "Polygon's normal is not orthogonal to one of the edges");
     }
 }

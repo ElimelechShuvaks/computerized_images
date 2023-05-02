@@ -29,16 +29,65 @@ class PlaneTest {
 
     }
 
-//    /**
-//     * Test method for {@link Plane#getNormal(Point)}.
-//     */
-//    @Test
-//    void getNormal() {
-//        // ============ Equivalence Partitions Tests ==============
-//        //TC01 test if normal vector is correct
-//        Plane p1 = new Plane(new Point(0, 0, 0), new Point(0, 5, 0), new Point(5, 0, 0));
-//        Vector normal = new Vector(0, 0, 1);
-//        assertTrue(normal.equals(p1.getNormal(new Point(1, 1, 0))) ||
-//                normal.equals(p1.getNormal(new Point(-1, -1, 0))), "bad normal to plane");
-//    }
+    /**
+     * Test method for {@link Plane#getNormal(Point)}.
+     */
+    @Test
+    void getNormal() {
+        // ============ Equivalence Partitions Tests ==============
+        //TC01 test if normal vector is correct
+        Plane p1 = new Plane(new Point(0, 0, 0), new Point(0, 5, 0), new Point(5, 0, 0));
+        Vector normal = new Vector(0, 0, 1);
+        assertTrue(normal.equals(p1.getNormal(new Point(1, 1, 0))) ||
+                normal.equals(p1.getNormal(new Point(-1, -1, 0))), "bad normal to plane");
+    }
+
+    /**
+     * Test method for {@link Plane#findIntersections(Ray)}.
+     */
+    @Test
+    void testFindIntersections() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01 test if neither orthogonal nor parallel points intersects with plane
+        Plane plane = new Plane(new Point(1, 0, 0), new Vector(0, 1, 0));
+        Ray ray = new Ray(new Point(0, -2, 0), new Vector(-3, 6, 0));
+        assertEquals(1, plane.findIntersections(ray).size(), "ray intersects plane");
+        assertEquals(new Point(-1, 0, 0), plane.findIntersections(ray).get(0), "ray intersects plane");
+
+        // TC02 test if ray after plane and goes in opposite direction
+        ray = new Ray(new Point(0, -2, 0), new Vector(3, -4, 0));
+        assertEquals(null, plane.findIntersections(ray), "ray does not intersect plane");
+
+
+        // =============== Boundary Values Tests ==================
+        // TC03  ray is parallel to plane (0 points)
+        ray = new Ray(new Point(0, -2, 0), new Vector(0, 0, 1));
+        assertEquals(null, plane.findIntersections(ray), "ray is parallel to plane");
+
+        // TC04  ray is parallel to plane and is included in plane (0 points)
+        ray = new Ray(new Point(2, 0, 0), new Vector(1, 0, 0));
+        assertEquals(null, plane.findIntersections(ray), "ray is parallel to plane and is included in plane");
+
+        // TC05  ray is orthogonal to plane and starts before plane (1 point)
+        ray = new Ray(new Point(0, -2, 0), new Vector(0, 1, 0));
+        assertEquals(1, plane.findIntersections(ray).size(), "ray is orthogonal to plane and starts before plane");
+        assertEquals(new Point(0, 0, 0), plane.findIntersections(ray).get(0), "ray is orthogonal to plane and starts before plane");
+
+        // TC06  ray is orthogonal to plane and starts in plane (0 points)
+        ray = new Ray(new Point(2, 0, 0), new Vector(0, 1, 0));
+        assertEquals(null, plane.findIntersections(ray), "ray is orthogonal to plane and starts in plane");
+
+        // TC07  ray is orthogonal to plane and starts after plane (0 points)
+        ray = new Ray(new Point(-1, 1, 0), new Vector(0, 1, 0));
+        assertEquals(null, plane.findIntersections(ray), "ray is orthogonal to plane and starts after plane");
+
+        // TC08  ray is neither orthogonal nor parallel to plane and starts in plane (0 points)
+        ray = new Ray(new Point(2, 0, 0), new Vector(1, 1, 0));
+        assertEquals(null, plane.findIntersections(ray), "ray is neither orthogonal nor parallel to plane and starts in plane");
+
+        // TC09  ray is neither orthogonal nor parallel to plane and starts in plane and starts at reference point (0 points)
+        ray = new Ray(new Point(1, 0, 0), new Vector(1, 1, 0));
+        assertEquals(null, plane.findIntersections(ray), "ray is neither orthogonal nor parallel to plane and starts in plane and starts at reference point");
+
+    }
 }

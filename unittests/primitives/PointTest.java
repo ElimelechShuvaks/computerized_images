@@ -77,7 +77,7 @@ class PointTest {
         // TC01 distance squared between two different points
         Point p0 = new Point(1,0, 0);
         Point p1 = new Point(2 ,0,  0);
-        assertEquals(p0.distanceSquared(p1), 3, "distance of points is incorrect");
+        assertEquals(1, p0.distanceSquared(p1), 0.0000001, "distance of points is incorrect");
 
         // =============== Boundary Values Tests ==================
         // TC02 distance squared from point to itself

@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * represents a plane in space.
@@ -56,4 +59,7 @@ public class Plane implements Geometry {
         return normal;
     }
 
+    public List<Point> findIntersections(Ray ray) {
+        return null;
+    }
 }
