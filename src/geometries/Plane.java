@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
 import java.util.List;
@@ -59,7 +60,19 @@ public class Plane implements Geometry {
         return normal;
     }
 
+    @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
-    }
-}
+        Point ray_P0 = ray.getP0();
+        Vector ray_dir = ray.getDir();
+
+        double checkOrthogonal = normal.dotProduct(ray_dir);
+        if (Util.isZero(checkOrthogonal)) return null; // the ray is orthogonal to the plane
+
+        double t = p0.subtract(ray_P0).dotProduct(normal);
+        if (Util.isZero(t)) return null; // the ray is started in the plane
+
+        t = Util.alignZero(p0.subtract(ray_P0).dotProduct(normal)) / (ray_dir.dotProduct(normal));
+        if (t <= 0) return null; // the ray started after the plane
+
+        return List.of(ray_P0.add(ray_dir.scale(t)));
+    }}
