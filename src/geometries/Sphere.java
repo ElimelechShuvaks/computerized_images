@@ -2,9 +2,13 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Math.sqrt;
 
 /**
  * Class Sphere is the basic class representing a sphere in the
@@ -37,6 +41,39 @@ public class Sphere extends RadialGeometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
+        Point ray_P0 = ray.getP0();
+        Vector ray_dir = ray.getDir();
+
+        if (ray_P0.equals(center)) {
+            List<Point> intersections = new ArrayList<Point>();
+            intersections.add(center.add(ray_dir.scale(radius)));
+            return intersections;
+        }
+
+        Vector pointToCenter = center.subtract(ray_P0);
+        double tm = pointToCenter.dotProduct(ray_dir);
+        double distanceFromCenter = sqrt(pointToCenter.dotProduct(pointToCenter) - tm * tm);
+        if (distanceFromCenter >= radius) {
+            return null;
+        }
+
+        double th = sqrt(radius * radius - distanceFromCenter * distanceFromCenter);
+        double firstDistance = tm - th;
+        double secondDistance = tm + th;
+        if (firstDistance > 0 || secondDistance > 0) {
+            List<Point> intersections = new ArrayList<Point>();
+            if (Util.alignZero(firstDistance) > 0) {
+                Point firstIntersection = ray_P0.add(ray_dir.scale(firstDistance));
+                intersections.add(firstIntersection);
+            }
+            if (Util.alignZero(secondDistance) > 0) {
+                Point secondIntersection = ray_P0.add(ray_dir.scale(secondDistance));
+                intersections.add(secondIntersection);
+            } else {
+                return null;
+            }
+            return intersections;
+        }
         return null;
     }
 }

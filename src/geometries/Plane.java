@@ -34,9 +34,12 @@ public class Plane implements Geometry {
         normal = v1.crossProduct(v2).normalize();
     }
 
-    /** Constructor to initialize Plane based on the normal to the plane and point on the plane
+    /**
+     * Constructor to initialize Plane based on the normal to the plane and point on the plane
+     *
      * @param p point on the plane
-     * @param v the normal to the plane*/
+     * @param v the normal to the plane
+     */
     public Plane(Point p, Vector v) {
         p0 = p;
         normal = v.normalize();
@@ -68,6 +71,7 @@ public class Plane implements Geometry {
         double checkOrthogonal = normal.dotProduct(ray_dir);
         if (Util.isZero(checkOrthogonal)) return null; // the ray is orthogonal to the plane
 
+        if (p0.equals(ray_P0)) return null;
         double t = p0.subtract(ray_P0).dotProduct(normal);
         if (Util.isZero(t)) return null; // the ray is started in the plane
 
@@ -75,4 +79,5 @@ public class Plane implements Geometry {
         if (t <= 0) return null; // the ray started after the plane
 
         return List.of(ray_P0.add(ray_dir.scale(t)));
-    }}
+    }
+}
