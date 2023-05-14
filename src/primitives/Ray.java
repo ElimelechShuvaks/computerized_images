@@ -8,9 +8,12 @@ public class Ray {
     private final Point p0;
     private final Vector dir;
 
-    /** Constructor to initialize Ray base on start point and direction
+    /**
+     * Constructor to initialize Ray base on start point and direction
+     *
      * @param p the start point
-     * @param v the direction*/
+     * @param v the direction
+     */
     public Ray(Point p, Vector v) {
         this.p0 = p;
         this.dir = v.normalize();
