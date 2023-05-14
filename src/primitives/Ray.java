@@ -34,6 +34,15 @@ public class Ray {
         return dir;
     }
 
+    /**
+     * colculate the point on the ray that is scale with param t
+     * @param t number to scale
+     * @return the new point
+     */
+    public Point getPoint(double t) {
+        return p0.add(dir.scale(t));
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

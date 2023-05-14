@@ -63,11 +63,11 @@ public class Sphere extends RadialGeometry {
         if (firstDistance > 0 || secondDistance > 0) {
             List<Point> intersections = new ArrayList<Point>();
             if (Util.alignZero(firstDistance) > 0) {
-                Point firstIntersection = ray_P0.add(ray_dir.scale(firstDistance));
+                Point firstIntersection = ray.getPoint(firstDistance);
                 intersections.add(firstIntersection);
             }
             if (Util.alignZero(secondDistance) > 0) {
-                Point secondIntersection = ray_P0.add(ray_dir.scale(secondDistance));
+                Point secondIntersection = ray.getPoint(secondDistance);
                 intersections.add(secondIntersection);
             } else {
                 return null;

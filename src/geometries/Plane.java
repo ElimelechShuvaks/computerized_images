@@ -78,6 +78,6 @@ public class Plane implements Geometry {
         t = Util.alignZero(p0.subtract(ray_P0).dotProduct(normal)) / (ray_dir.dotProduct(normal));
         if (t <= 0) return null; // the ray started after the plane
 
-        return List.of(ray_P0.add(ray_dir.scale(t)));
+        return List.of(ray.getPoint(t));
     }
 }
