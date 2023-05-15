@@ -4,8 +4,14 @@ import primitives.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit test class for Geometries class
+ */
 class GeometriesTest {
 
+    /**
+     * Test method for {@link Geometries#findIntersections(Ray)}.
+     */
     @Test
     void findIntersections() {
         // ============ Equivalence Partitions Tests ==============
