@@ -11,10 +11,11 @@ public class AmbientLight {
     /**
      * Ambient lighting with black color
      */
-    public static final Color NONE = Color.BLACK.scale(Double3.ZERO);
+    public static final AmbientLight NONE = new AmbientLight(Color.BLACK, Double3.ZERO);
 
     /**
      * constractor for AmbientLight claas
+     *
      * @param iA the color
      * @param kA the attenuation coefficient
      */
@@ -24,6 +25,7 @@ public class AmbientLight {
 
     /**
      * constractor for AmbientLight claas
+     *
      * @param iA the color
      * @param kA the attenuation coefficient
      */
@@ -33,6 +35,7 @@ public class AmbientLight {
 
     /**
      * getter
+     *
      * @return the color intensity
      */
     public Color getIntensity() {
