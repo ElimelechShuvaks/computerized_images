@@ -3,6 +3,7 @@ package renderer;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+import primitives.Util;
 
 /**
  * Represents a camera object
@@ -17,18 +18,18 @@ public class Camera {
     private double width;
 
     /**
-     * function that constructs the camera
-     * @param _position the position
-     * @param _vTo the vTo vector
-     * @param _vUp the vUp vector
+     * constructor that build the camera
+     * @param position the position
+     * @param vTo the vTo vector
+     * @param vUp the vUp vector
      *
      */
-    public Camera(Point _position, Vector _vTo, Vector _vUp) {
-        if(_vTo.dotProduct(_vUp) != 0)
+    public Camera(Point position, Vector vTo, Vector vUp) {
+        if(!Util.isZero(vTo.dotProduct(vUp)))
             throw new IllegalArgumentException("vTo and vUp must be orthogonal");
-        position = _position;
-        vTo = _vTo.normalize();
-        vUp = _vUp.normalize();
+        this.position = position;
+        this.vTo = vTo.normalize();
+        this.vUp = vUp.normalize();
         vRight = vTo.crossProduct(vUp).normalize();
     }
 
@@ -44,7 +45,7 @@ public class Camera {
      * function that gets the vTo vector
      * @return the vTo vector
      * */
-    public Vector getvTo() {
+    public Vector getVTo() {
         return vTo;
     }
 
@@ -52,7 +53,7 @@ public class Camera {
      * function that gets the vUp vector
      * @return the vUp vector
      */
-    public Vector getvUp() {
+    public Vector getVUp() {
         return vUp;
     }
 
@@ -60,7 +61,7 @@ public class Camera {
      * function that gets the vRight vector
      * @return the vRight vector
      */
-    public Vector getvRight() {
+    public Vector getVRight() {
         return vRight;
     }
 
@@ -92,7 +93,7 @@ public class Camera {
      * function that sets the width and height
      * @param width
      * @param height
-     * @return this
+     * @return the camera
      */
     public Camera setVPSize(double width, double height) {
         this.width = width;
@@ -103,7 +104,7 @@ public class Camera {
     /**
      * function that sets the distance
      * @param distance
-     * @return this
+     * @return the camera
      */
     public Camera setVPDistance(double distance) {
         this.distance = distance;
@@ -118,7 +119,7 @@ public class Camera {
      * @param j the y coordinate
      * @return the ray
      */
-    public  Ray constructRay(int nX, int nY, int j, int i){
+    public Ray constructRay(int nX, int nY, int j, int i){
         Point pC = position.add(vTo.scale(distance));
 
         double rY = height/nY;
@@ -128,8 +129,10 @@ public class Camera {
         double Xj = (j - (nX - 1d) / 2) * rX;
         Point Pij = pC;
 
-        if(Yi != 0) Pij = Pij.add(vUp.scale(Yi));
-        if(Xj != 0) Pij = Pij.add(vRight.scale(Xj));
+        if(!Util.isZero(Yi))
+            Pij = Pij.add(vUp.scale(Yi));
+        if(!Util.isZero(Xj))
+            Pij = Pij.add(vRight.scale(Xj));
 
         try{
             return new Ray(position, Pij.subtract(position));
