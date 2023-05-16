@@ -1,12 +1,13 @@
 package lighting;
 
-import primitives.*;
+import primitives.Color;
+import primitives.Double3;
 
 /**
  * claas for Ambient Light
  */
 public class AmbientLight {
-    private Color intensity;
+    private final Color intensity;
 
     /**
      * Ambient lighting with black color

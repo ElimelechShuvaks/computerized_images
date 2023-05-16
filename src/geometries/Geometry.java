@@ -9,6 +9,7 @@ import primitives.Vector;
 public interface Geometry extends Intersectable {
     /**
      * take a point and return the normal vector in this point
+     *
      * @param p point
      * @return a normal vector
      */

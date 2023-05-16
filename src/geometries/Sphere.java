@@ -2,13 +2,12 @@ package geometries;
 
 import primitives.Point;
 import primitives.Ray;
-import primitives.Util;
 import primitives.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.sqrt;
+import static primitives.Util.alignZero;
 
 /**
  * Class Sphere is the basic class representing a sphere in the
@@ -17,9 +16,12 @@ import static java.lang.Math.sqrt;
 public class Sphere extends RadialGeometry {
     private final Point center;
 
-    /** Constructor to initialize Tube based on radius and direction
+    /**
+     * Constructor to initialize Tube based on radius and direction
+     *
      * @param radius the radius length
-     * @param center the central point of the tube*/
+     * @param center the central point of the tube
+     */
     public Sphere(double radius, Point center) {
         super(radius);
         this.center = center;
@@ -42,38 +44,23 @@ public class Sphere extends RadialGeometry {
     @Override
     public List<Point> findIntersections(Ray ray) {
         Point ray_P0 = ray.getP0();
-        Vector ray_dir = ray.getDir();
+        if (ray_P0.equals(center))
+            return List.of(ray.getPoint(radius));
 
-        if (ray_P0.equals(center)) {
-            List<Point> intersections = new ArrayList<Point>();
-            intersections.add(center.add(ray_dir.scale(radius)));
-            return intersections;
-        }
+        Vector ray_dir = ray.getDir();
 
         Vector pointToCenter = center.subtract(ray_P0);
         double tm = pointToCenter.dotProduct(ray_dir);
-        double distanceFromCenter = sqrt(pointToCenter.dotProduct(pointToCenter) - tm * tm);
-        if (distanceFromCenter >= radius) {
-            return null;
-        }
+        double distanceFromCenterSquared = pointToCenter.lengthSquared() - tm * tm;
+        double thSquared = radiusSquared - distanceFromCenterSquared;
+        if (alignZero(thSquared) <= 0) return null;
 
-        double th = sqrt(radius * radius - distanceFromCenter * distanceFromCenter);
-        double firstDistance = tm - th;
+        double th = sqrt(thSquared); // always positive
         double secondDistance = tm + th;
-        if (firstDistance > 0 || secondDistance > 0) {
-            List<Point> intersections = new ArrayList<Point>();
-            if (Util.alignZero(firstDistance) > 0) {
-                Point firstIntersection = ray.getPoint(firstDistance);
-                intersections.add(firstIntersection);
-            }
-            if (Util.alignZero(secondDistance) > 0) {
-                Point secondIntersection = ray.getPoint(secondDistance);
-                intersections.add(secondIntersection);
-            } else {
-                return null;
-            }
-            return intersections;
-        }
-        return null;
+        if (alignZero(secondDistance) <= 0) return null;
+
+        double firstDistance = tm - th;
+        return alignZero(firstDistance) <= 0 ? List.of(ray.getPoint(secondDistance)) //
+                : List.of(ray.getPoint(firstDistance), ray.getPoint(secondDistance));
     }
 }

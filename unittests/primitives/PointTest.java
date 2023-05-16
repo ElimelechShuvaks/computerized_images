@@ -2,7 +2,8 @@ package primitives;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for Point class
@@ -75,8 +76,8 @@ class PointTest {
     void distanceSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01 distance squared between two different points
-        Point p0 = new Point(1,0, 0);
-        Point p1 = new Point(2 ,0,  0);
+        Point p0 = new Point(1, 0, 0);
+        Point p1 = new Point(2, 0, 0);
         assertEquals(1, p0.distanceSquared(p1), 0.0000001, "distance of points is incorrect");
 
         // =============== Boundary Values Tests ==================

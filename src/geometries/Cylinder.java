@@ -21,10 +21,13 @@ public class Cylinder extends Tube {
         return height;
     }
 
-    /** Constructor to initialize Cylinder based on radius, the center axis and height
-     * @param radius first number value
+    /**
+     * Constructor to initialize Cylinder based on radius, the center axis and height
+     *
+     * @param radius  first number value
      * @param axisRay second number value
-     * @param height third number value */
+     * @param height  third number value
+     */
     public Cylinder(double radius, Ray axisRay, double height) {
         super(radius, axisRay);
         this.height = height;

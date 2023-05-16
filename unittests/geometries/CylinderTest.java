@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import primitives.Point;
 
 
-
 /**
  * Unit test class for Cylinder class
  */

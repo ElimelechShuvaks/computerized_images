@@ -1,13 +1,10 @@
 package geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
+import primitives.Point;
+import primitives.Vector;
 
-import geometries.*;
-import primitives.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing Polygons

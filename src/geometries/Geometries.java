@@ -10,13 +10,12 @@ import java.util.List;
  * class for legend of geometric bodies
  */
 public class Geometries implements Intersectable {
-    private final List<Intersectable> geometries;
+    private final List<Intersectable> geometries = new LinkedList<>();
 
     /**
      * Default constructor that initializes an empty linked list to hold the geometric objects
      */
     public Geometries() {
-        geometries = new LinkedList<>();
     }
 
     /**
@@ -25,7 +24,6 @@ public class Geometries implements Intersectable {
      * @param geometries - geometries to insert
      */
     public Geometries(Intersectable... geometries) {
-        this.geometries = new LinkedList<>();
         add(geometries);
     }
 
@@ -35,24 +33,20 @@ public class Geometries implements Intersectable {
      * @param geometries- to add
      */
     public void add(Intersectable... geometries) {
-        for (Intersectable geometry : geometries)
-            this.geometries.add(geometry);
+        this.geometries.addAll(List.of(geometries));
     }
 
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> intersections = null;
-        List<Point> temp;
         for (Intersectable geometry : geometries) {
-            temp = geometry.findIntersections(ray);
+            var temp = geometry.findIntersections(ray);
             if (temp != null) {
-                if (intersections == null) {
+                if (intersections == null)
                     intersections = new LinkedList<>();
-                }
                 intersections.addAll(temp);
             }
         }
-
         return intersections;
     }
 }

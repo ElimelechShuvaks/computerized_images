@@ -69,15 +69,13 @@ public class Plane implements Geometry {
         Vector ray_dir = ray.getDir();
 
         double checkOrthogonal = normal.dotProduct(ray_dir);
-        if (Util.isZero(checkOrthogonal)) return null; // the ray is orthogonal to the plane
+        // the ray is orthogonal to the plane or the ray starts at Q of the plane
+        if (Util.isZero(checkOrthogonal) || p0.equals(ray_P0)) return null;
 
-        if (p0.equals(ray_P0)) return null;
-        double t = p0.subtract(ray_P0).dotProduct(normal);
-        if (Util.isZero(t)) return null; // the ray is started in the plane
+        double numerator = p0.subtract(ray_P0).dotProduct(normal);
+        if (Util.isZero(numerator)) return null; // the ray is started in the plane
 
-        t = Util.alignZero(p0.subtract(ray_P0).dotProduct(normal)) / (ray_dir.dotProduct(normal));
-        if (t <= 0) return null; // the ray started after the plane
-
-        return List.of(ray.getPoint(t));
+        double t = Util.alignZero(numerator / checkOrthogonal);
+        return t <= 0 ? null : List.of(ray.getPoint(t));
     }
 }

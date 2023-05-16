@@ -77,7 +77,8 @@ public class CameraIntegrationTest {
 
     /**
      * Helper method for testing intersectables and a camera, now with 3x3 view plane
-     * @param intersectables Intersectables to check the number of intersections for each one.
+     *
+     * @param intersectables        Intersectables to check the number of intersections for each one.
      * @param expectedIntersections All expected intersections for the intersectables (in the same order of intersectables).
      */
     private void testIntersectsAndCamera(Intersectable[] intersectables, int[] expectedIntersections) {

@@ -1,8 +1,12 @@
 package geometries;
 
-import primitives.*;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit test class for Geometries class
@@ -17,7 +21,7 @@ class GeometriesTest {
         // ============ Equivalence Partitions Tests ==============
         //TC01 - Ray intersects with a Sphere and plane but not with a Triangle
         Geometries geometries = new Geometries();
-        geometries.add(new Sphere(1,new Point(1, 0, 0)));
+        geometries.add(new Sphere(1, new Point(1, 0, 0)));
         geometries.add(new Plane(new Point(1, 0, 0), new Vector(0, 1, 0)));
         geometries.add(new Triangle(new Point(1, 0, 0), new Point(1, 5, 0), new Point(6, 0, 0)));
         assertEquals(3, geometries.findIntersections(new Ray(new Point(0.5, 4, 0.5), new Vector(0, -1, 0))).size(), "Ray intersects with a Sphere and plane but not with a Triangle");

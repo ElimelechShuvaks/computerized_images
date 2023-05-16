@@ -29,7 +29,7 @@ class TriangleTest {
      * Test method for {@link geometries.Triangle#findIntersections(primitives.Ray)}.
      */
     @Test
-    void findIntersections(){
+    void findIntersections() {
         // ============ Equivalence Partitions Tests ==============
         // TC01 ray passes through triangle
         Ray ray = new Ray(new Point(3, 3, 2), new Vector(-1, -1, -4));

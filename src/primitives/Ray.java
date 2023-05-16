@@ -1,5 +1,7 @@
 package primitives;
 
+import static primitives.Util.isZero;
+
 /**
  * Ray - half straight
  */
@@ -38,12 +40,13 @@ public class Ray {
     }
 
     /**
-     * colculate the point on the ray that is scale with param t
-     * @param t number to scale
-     * @return the new point
+     * colculate the point on the ray that is at a distance from the head
+     *
+     * @param t the distance
+     * @return the result point
      */
     public Point getPoint(double t) {
-        return p0.add(dir.scale(t));
+        return isZero(t) ? p0 : p0.add(dir.scale(t));
     }
 
     @Override

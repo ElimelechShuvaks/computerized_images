@@ -2,7 +2,8 @@ package primitives;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests class for Vector class.
@@ -65,7 +66,7 @@ class VectorTest {
 
         // =============== Boundary Values Tests ==================
         // TC03 - test case for zero scale
-        assertThrows(IllegalArgumentException.class, () -> v1.scale(0),"scale() for zero scale does not throw an exception");
+        assertThrows(IllegalArgumentException.class, () -> v1.scale(0), "scale() for zero scale does not throw an exception");
     }
 
     /**
@@ -146,7 +147,7 @@ class VectorTest {
         assertEquals(20, dot, 0.00001, "dotProduct() wrong result");
 
         // TC02 - normal test case - obtuse angle
-        v2 = new Vector(-3,-5,-1);
+        v2 = new Vector(-3, -5, -1);
         dot = v1.dotProduct(v2);
         assertEquals(-16, dot, 0.00001, "dotProduct() wrong result");
 
