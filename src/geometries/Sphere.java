@@ -3,9 +3,7 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-
 import java.util.List;
-
 import static java.lang.Math.sqrt;
 import static primitives.Util.alignZero;
 
@@ -43,14 +41,14 @@ public class Sphere extends RadialGeometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        Point ray_P0 = ray.getP0();
-        if (ray_P0.equals(center))
+        Point rayP0 = ray.getP0();
+        if (rayP0.equals(center))
             return List.of(ray.getPoint(radius));
 
-        Vector ray_dir = ray.getDir();
+        Vector rayDir = ray.getDir();
 
-        Vector pointToCenter = center.subtract(ray_P0);
-        double tm = pointToCenter.dotProduct(ray_dir);
+        Vector pointToCenter = center.subtract(rayP0);
+        double tm = pointToCenter.dotProduct(rayDir);
         double distanceFromCenterSquared = pointToCenter.lengthSquared() - tm * tm;
         double thSquared = radiusSquared - distanceFromCenterSquared;
         if (alignZero(thSquared) <= 0) return null;

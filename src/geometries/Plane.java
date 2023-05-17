@@ -65,14 +65,14 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        Point ray_P0 = ray.getP0();
-        Vector ray_dir = ray.getDir();
+        Point rayP0 = ray.getP0();
+        Vector rayDir = ray.getDir();
 
-        double checkOrthogonal = normal.dotProduct(ray_dir);
+        double checkOrthogonal = normal.dotProduct(rayDir);
         // the ray is orthogonal to the plane or the ray starts at Q of the plane
-        if (Util.isZero(checkOrthogonal) || p0.equals(ray_P0)) return null;
+        if (Util.isZero(checkOrthogonal) || p0.equals(rayP0)) return null;
 
-        double numerator = p0.subtract(ray_P0).dotProduct(normal);
+        double numerator = p0.subtract(rayP0).dotProduct(normal);
         if (Util.isZero(numerator)) return null; // the ray is started in the plane
 
         double t = Util.alignZero(numerator / checkOrthogonal);

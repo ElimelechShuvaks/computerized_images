@@ -20,7 +20,6 @@ public class Camera {
 
     /**
      * constructor that build the camera
-     *
      * @param position the position
      * @param vTo      the vTo vector
      * @param vUp      the vUp vector
@@ -36,7 +35,6 @@ public class Camera {
 
     /**
      * function that gets the position of the camera
-     *
      * @return the position
      */
     @SuppressWarnings("unused")
@@ -46,7 +44,6 @@ public class Camera {
 
     /**
      * function that gets the vTo vector
-     *
      * @return the vTo vector
      */
     @SuppressWarnings("unused")
@@ -56,7 +53,6 @@ public class Camera {
 
     /**
      * function that gets the vUp vector
-     *
      * @return the vUp vector
      */
     @SuppressWarnings("unused")
@@ -66,7 +62,6 @@ public class Camera {
 
     /**
      * function that gets the vRight vector
-     *
      * @return the vRight vector
      */
     @SuppressWarnings("unused")
@@ -76,7 +71,6 @@ public class Camera {
 
     /**
      * function that gets the distance
-     *
      * @return the distance
      */
     @SuppressWarnings("unused")
@@ -86,7 +80,6 @@ public class Camera {
 
     /**
      * function that gets the height
-     *
      * @return the height
      */
     @SuppressWarnings("unused")
@@ -96,7 +89,6 @@ public class Camera {
 
     /**
      * function that gets the width
-     *
      * @return the width
      */
     @SuppressWarnings("unused")
@@ -106,7 +98,6 @@ public class Camera {
 
     /**
      * function that sets the width and height
-     *
      * @param width  width of the View Plane
      * @param height height of the View Plane
      * @return the camera
@@ -119,7 +110,6 @@ public class Camera {
 
     /**
      * function that sets the distance
-     *
      * @param distance distance from the Camera to the View Plane
      * @return the camera
      */
@@ -130,7 +120,6 @@ public class Camera {
 
     /**
      * function that gets the ray from the camera to the point
-     *
      * @param nX the x resolution
      * @param nY the y resolution
      * @param i  the x coordinate
@@ -145,13 +134,13 @@ public class Camera {
 
         double Yi = -(i - (nY - 1d) / 2) * rY;
         double Xj = (j - (nX - 1d) / 2) * rX;
-        Point Pij = pC;
+        Point rayEndPoint  = pC;
 
         if (!isZero(Yi))
-            Pij = Pij.add(vUp.scale(Yi));
+            rayEndPoint  = rayEndPoint .add(vUp.scale(Yi));
         if (!isZero(Xj))
-            Pij = Pij.add(vRight.scale(Xj));
+            rayEndPoint  = rayEndPoint .add(vRight.scale(Xj));
 
-        return new Ray(position, Pij.subtract(position));
+        return new Ray(position, rayEndPoint .subtract(position));
     }
 }
