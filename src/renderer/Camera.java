@@ -1,8 +1,11 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.MissingResourceException;
 
 import static primitives.Util.*;
 
@@ -17,12 +20,15 @@ public class Camera {
     private double distance;
     private double height;
     private double width;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
 
     /**
      * constructor that build the camera
      * @param position the position
      * @param vTo      the vTo vector
      * @param vUp      the vUp vector
+     * @throws IllegalArgumentException if vTo and vUp are not orthogonal
      */
     public Camera(Point position, Vector vTo, Vector vUp) {
         if (!isZero(vTo.dotProduct(vUp)))
@@ -97,6 +103,26 @@ public class Camera {
     }
 
     /**
+     * Sets the image writer for the camera.
+     * @param imageWriter the image writer
+     * @return the camera
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * Sets the ray tracer for the camera.
+     * @param rayTracer the ray tracer
+     * @return the camera
+     */
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
+    /**
      * function that sets the width and height
      * @param width  width of the View Plane
      * @param height height of the View Plane
@@ -142,5 +168,56 @@ public class Camera {
             rayEndPoint  = rayEndPoint .add(vRight.scale(Xj));
 
         return new Ray(position, rayEndPoint .subtract(position));
+    }
+
+    /**
+     * Renders the image by casting rays from the camera to the view plane and
+     * storing the resulting colors in the image writer.
+     * @throws MissingResourceException if the camera or image writer is not initialized
+     */
+    public void renderImage(){
+        if(position == null || vTo == null || vUp == null || vRight == null || distance == 0 || height == 0 || width == 0 || imageWriter == null || rayTracer == null)
+            throw new MissingResourceException("", "", "Camera is not initialized");
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                Ray ray = constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i );
+                imageWriter.writePixel(j, i, this.castRay(imageWriter.getNx(), imageWriter.getNy(), i, j));
+            }
+        }
+    }
+
+    /**
+     * Prints a grid on the image writer by writing pixels of the specified color
+     * at regular intervals.
+     * @param interval the interval at which to place the grid lines
+     * @param color    the color of the grid lines
+     * @throws MissingResourceException if the image writer is not initialized
+     */
+    public void printGrid(int interval, Color color) {
+        if (imageWriter == null)
+            throw new MissingResourceException("", "", "Camera is not initialized");
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                if ((i % interval == 0) || (j % interval == 0))
+                    imageWriter.writePixel(i, j, color);
+            }
+        }
+    }
+
+
+    /**
+     * Writes the rendered image to the output file.
+     * @throws MissingResourceException if the image writer is not initialized
+     */
+    public void writeToImage() {
+        if (imageWriter == null)
+            throw new MissingResourceException("", "", "Camera is not initialized");
+        imageWriter.writeToImage();
+    }
+
+    private Color castRay(int nX, int nY, int i, int j){
+        Ray tempRay = constructRay(nX, nY, j, i);
+        return rayTracer.traceRay(tempRay);
+
     }
 }
