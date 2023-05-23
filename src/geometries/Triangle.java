@@ -43,7 +43,8 @@ public class Triangle extends Polygon {
             Vector n3 = p0.subtract(p2).crossProduct(p2.subtract(p));
             if (sign1 * n1.dotProduct(n3) < 0) return null;
 
-            return List.of(new GeoPoint(this, result.get(0).point));
+            result.get(0).geometry = this;
+            return result;
         } catch (IllegalArgumentException ignore) {
             return null;
         }

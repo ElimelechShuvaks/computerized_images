@@ -50,6 +50,7 @@ public class Plane extends Geometry {
      *
      * @return p0(a point in the plane)
      */
+    @SuppressWarnings("unused")
     public Point getP0() {
         return p0;
     }

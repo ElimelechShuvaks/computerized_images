@@ -74,7 +74,7 @@ public class Ray {
         if (points == null || points.isEmpty())
             return null;
         GeoPoint closest = null;
-        double minDistance = Double.MAX_VALUE;
+        double minDistance = Double.POSITIVE_INFINITY;
         for (GeoPoint p : points) {
             double distance = p.point.distance(p0);
             if (distance < minDistance) {

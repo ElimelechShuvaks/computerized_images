@@ -30,6 +30,7 @@ public class Sphere extends RadialGeometry {
      *
      * @return center
      */
+    @SuppressWarnings("unused")
     public Point getCenter() {
         return center;
     }

@@ -2,7 +2,11 @@ package scene;
 
 import geometries.Geometries;
 import lighting.AmbientLight;
+import lighting.LightSource;
 import primitives.Color;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The `Scene` class represents a collection of objects that can be rendered together in a 3D scene.
@@ -12,22 +16,27 @@ public class Scene {
     /**
      * The name of this scene.
      */
-    public String name;
+    public final String name;
 
     /**
      * The background color of this scene.
      */
-    public Color background;
+    public Color background = Color.BLACK;
 
     /**
      * The ambient light of this scene.
      */
-    public AmbientLight ambientLight;
+    public AmbientLight ambientLight = AmbientLight.NONE;
 
     /**
      * The geometries in this scene.
      */
-    public Geometries geometries;
+    public Geometries geometries = new Geometries();
+
+    /**
+     * list of the lights in the scene
+     */
+    public List<LightSource> lights = new LinkedList<>();
 
     /**
      * Constructs a new `Scene` object with the given name.
@@ -38,9 +47,6 @@ public class Scene {
      */
     public Scene(String name) {
         this.name = name;
-        this.background = Color.BLACK;
-        this.ambientLight = AmbientLight.NONE;
-        this.geometries = new Geometries();
     }
 
     /**
@@ -69,10 +75,21 @@ public class Scene {
      * Sets the geometries of this scene to the specified collection of geometries.
      *
      * @param geometries the collection of geometries to set
-     * @return this `Scene` object
+     * @return the Scene object
      */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
+        return this;
+    }
+
+    /**
+     * add a light to the scene
+     * @param light the light to add
+     * @return the Scene object
+     */
+    @SuppressWarnings("unused")
+    public Scene addLight(LightSource... light) {
+        lights.addAll(List.of(light));
         return this;
     }
 

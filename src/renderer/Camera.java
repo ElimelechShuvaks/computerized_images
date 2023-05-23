@@ -158,14 +158,14 @@ public class Camera {
         double rY = height / nY;
         double rX = width / nX;
 
-        double Yi = -(i - (nY - 1d) / 2) * rY;
-        double Xj = (j - (nX - 1d) / 2) * rX;
+        double yI = -(i - (nY - 1d) / 2) * rY;
+        double xJ = (j - (nX - 1d) / 2) * rX;
         Point rayEndPoint  = pC;
 
-        if (!isZero(Yi))
-            rayEndPoint  = rayEndPoint .add(vUp.scale(Yi));
-        if (!isZero(Xj))
-            rayEndPoint  = rayEndPoint .add(vRight.scale(Xj));
+        if (!isZero(yI))
+            rayEndPoint  = rayEndPoint .add(vUp.scale(yI));
+        if (!isZero(xJ))
+            rayEndPoint  = rayEndPoint .add(vRight.scale(xJ));
 
         return new Ray(position, rayEndPoint .subtract(position));
     }
@@ -175,15 +175,17 @@ public class Camera {
      * storing the resulting colors in the image writer.
      * @throws MissingResourceException if the camera or image writer is not initialized
      */
-    public void renderImage(){
+    public Camera renderImage(){
         if(position == null || vTo == null || vUp == null || vRight == null || distance == 0 || height == 0 || width == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("", "", "Camera is not initialized");
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
-                Ray ray = constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i );
-                imageWriter.writePixel(j, i, this.castRay(imageWriter.getNx(), imageWriter.getNy(), i, j));
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
+                imageWriter.writePixel(j, i, this.castRay(nX, nY, i, j));
             }
         }
+        return this;
     }
 
     /**
@@ -196,8 +198,10 @@ public class Camera {
     public void printGrid(int interval, Color color) {
         if (imageWriter == null)
             throw new MissingResourceException("", "", "Camera is not initialized");
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
                 if ((i % interval == 0) || (j % interval == 0))
                     imageWriter.writePixel(i, j, color);
             }
