@@ -1,15 +1,13 @@
 package geometries;
 
-import primitives.Point;
 import primitives.Ray;
-
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * class for legend of geometric bodies
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
     private final List<Intersectable> geometries = new LinkedList<>();
 
     /**
@@ -37,10 +35,10 @@ public class Geometries implements Intersectable {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> intersections = null;
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<GeoPoint> intersections = null;
         for (Intersectable geometry : geometries) {
-            var temp = geometry.findIntersections(ray);
+            var temp = geometry.findGeoIntersections(ray);
             if (temp != null) {
                 if (intersections == null)
                     intersections = new LinkedList<>();
@@ -48,5 +46,8 @@ public class Geometries implements Intersectable {
             }
         }
         return intersections;
+
+
     }
+
 }

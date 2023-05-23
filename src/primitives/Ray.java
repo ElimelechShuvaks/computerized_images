@@ -1,5 +1,7 @@
 package primitives;
 
+import geometries.Intersectable.GeoPoint;
+
 import java.util.List;
 
 import static primitives.Util.isZero;
@@ -53,16 +55,28 @@ public class Ray {
 
     /**
      * Calculate the closest point in list of intersections
+     *
      * @param points list of points
      * @return closest point
      */
     public Point findClosestPoint(List<Point> points) {
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+    }
+
+    /**
+     * Find closest GeoPoint
+     *
+     * @param points list of GeoPoints
+     * @return closest GeoPoint
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> points) {
         if (points == null || points.isEmpty())
             return null;
-        Point closest = null;
+        GeoPoint closest = null;
         double minDistance = Double.MAX_VALUE;
-        for (Point p : points) {
-            double distance = p.distance(p0);
+        for (GeoPoint p : points) {
+            double distance = p.point.distance(p0);
             if (distance < minDistance) {
                 closest = p;
                 minDistance = distance;
@@ -70,6 +84,7 @@ public class Ray {
         }
         return closest;
     }
+
 
     @Override
     public boolean equals(Object obj) {

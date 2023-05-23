@@ -25,14 +25,14 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        var result = this.plane.findIntersections(ray);
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+        var result = this.plane.findGeoIntersections(ray);
         if (result == null) return null;
 
         Point p0 = this.vertices.get(0);
         Point p1 = this.vertices.get(1);
         Point p2 = this.vertices.get(2);
-        Point p = result.get(0);
+        Point p = result.get(0).point;
 
         try {
             Vector n1 = p1.subtract(p0).crossProduct(p0.subtract(p));
@@ -43,9 +43,10 @@ public class Triangle extends Polygon {
             Vector n3 = p0.subtract(p2).crossProduct(p2.subtract(p));
             if (sign1 * n1.dotProduct(n3) < 0) return null;
 
-            return result;
+            return List.of(new GeoPoint(this, result.get(0).point));
         } catch (IllegalArgumentException ignore) {
             return null;
         }
     }
+
 }
