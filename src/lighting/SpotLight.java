@@ -12,7 +12,7 @@ import static primitives.Util.alignZero;
 
 public class SpotLight extends PointLight {
 
-    private Vector direction;
+    private final Vector direction;
 
     /**
      * Constructor that sets the light's intensity.

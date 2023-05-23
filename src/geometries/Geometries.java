@@ -22,6 +22,7 @@ public class Geometries extends Intersectable {
      *
      * @param geometries - geometries to insert
      */
+    @SuppressWarnings("unused")
     public Geometries(Intersectable... geometries) {
         add(geometries);
     }

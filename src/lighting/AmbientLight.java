@@ -29,6 +29,7 @@ public class AmbientLight extends Light {
      * @param iA the color
      * @param kA the attenuation coefficient
      */
+    @SuppressWarnings("unused")
     public AmbientLight(Color iA, double kA){
         super(iA.scale(kA));
     }
