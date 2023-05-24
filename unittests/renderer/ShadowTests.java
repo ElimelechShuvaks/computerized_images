@@ -7,7 +7,6 @@ import static java.awt.Color.*;
 import geometries.*;
 import lighting.*;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
 /**
@@ -16,13 +15,13 @@ import scene.Scene;
  * @author Dan
  */
 public class ShadowTests {
-    private Intersectable sphere = new Sphere(60d, new Point(0, 0, -200))                                         //
+    private final Intersectable sphere = new Sphere(60d, new Point(0, 0, -200))                                         //
             .setEmission(new Color(BLUE))                                                                                  //
             .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30));
-    private Material trMaterial = new Material().setKd(0.5).setKs(0.5).setShininess(30);
+    private final Material trMaterial = new Material().setKd(0.5).setKs(0.5).setShininess(30);
 
-    private Scene scene = new Scene("Test scene");
-    private Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0))   //
+    private final Scene scene = new Scene("Test scene");
+    private final Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0))   //
             .setVPSize(200, 200).setVPDistance(1000)                                                                       //
             .setRayTracer(new RayTracerBasic(scene));
 
