@@ -14,6 +14,9 @@ public class Ray {
     private final Point p0;
     private final Vector dir;
 
+    //value to move geoPoint, so it does not shade on itself
+    private static final double DELTA = 0.1;
+
     /**
      * Constructor to initialize Ray base on start point and direction
      *
@@ -23,6 +26,18 @@ public class Ray {
     public Ray(Point p, Vector v) {
         this.p0 = p;
         this.dir = v.normalize();
+    }
+
+    /**
+     * Constructor that moves the ray by DELTA
+     * @param p0 point
+     * @param direction direction (must be normalized)
+     * @param normal normal
+     */
+    public Ray(Point p0, Vector direction, Vector normal) {
+        Vector delta = normal.scale(normal.dotProduct(direction) > 0 ? DELTA : - DELTA);
+        this.p0 = p0.add(delta);
+        this.dir = direction;
     }
 
     /**
