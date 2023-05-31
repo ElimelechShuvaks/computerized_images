@@ -14,11 +14,11 @@ import static java.awt.Color.*;
  * Tests for reflection and transparency functionality, test for partial shadows
  * (with transparency)
  */
-public class myPictur {
+public class MyPictur {
     private final Scene scene = new Scene("Test scene");
 
     @Test
-    public void myPictur() {
+    public void pictur() {
         Camera camera = new Camera(new Point(-300, 0, 5), new Vector(1, 0, 0), new Vector(0, 0, 1))
                 .setVPSize(250, 250).setVPDistance(1000);
 
@@ -85,7 +85,7 @@ public class myPictur {
         }
 
         scene.lights.add(new DirectionalLight(new Color(white).scale(1.6), new Vector(1, -0.3, 0)));
-        ImageWriter imageWriter = new ImageWriter("myPictur", 600, 600);
+        ImageWriter imageWriter = new ImageWriter("MyPictur", 600, 600);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
