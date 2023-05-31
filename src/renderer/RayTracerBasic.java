@@ -155,6 +155,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n        normal vector
      * @return true if unshaded
      */
+    @SuppressWarnings("unused")
     private boolean unshaded(GeoPoint geoPoint, Vector l, Vector n, LightSource lightSource) {
         Ray lightRay = new Ray(geoPoint.point, l.scale(-1), n);
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
