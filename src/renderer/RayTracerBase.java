@@ -8,7 +8,7 @@ import scene.Scene;
  * It contains a scene field representing the scene being traced.
  */
 public abstract class RayTracerBase {
-
+    /** Scene to trace the rays through */
     protected final Scene scene;
 
     /**

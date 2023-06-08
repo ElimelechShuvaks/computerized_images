@@ -14,18 +14,18 @@ import static java.awt.Color.*;
  * Tests for reflection and transparency functionality, test for partial shadows
  * (with transparency)
  */
-public class MyPictur {
+public class MyPictureTest {
     private final Scene scene = new Scene("Test scene");
 
     @Test
-    public void pictur() {
+    public void picture() {
         Camera camera = new Camera(new Point(-300, 0, 5), new Vector(1, 0, 0), new Vector(0, 0, 1))
                 .setVPSize(250, 250).setVPDistance(1000);
 
         scene.setAmbientLight(new AmbientLight(new Color(white).reduce(6), new Double3(0.15)));
 
         double angle = 0;
-        double heigh = 0.8;
+        double height = 0.8;
 
         scene.geometries.add(
                 new Plane(new Point(1, 0, -0.5), new Point(0, 1, -0.5), new Point(0, 0, -0.5))
@@ -75,17 +75,17 @@ public class MyPictur {
             int colorIndex = i % colors.length;
 
             scene.geometries.add(
-                    new Sphere(0.5, new Point(4 * Math.cos(angle), 4 * Math.sin(angle), heigh))
+                    new Sphere(0.5, new Point(4 * Math.cos(angle), 4 * Math.sin(angle), height))
                             .setEmission(new Color(colors[colorIndex]).reduce(2.2))
                             .setMaterial(new Material().setKd(0.2).setKs(1).setShininess(80).setKt(0.3))
             );
 
             angle += 3.14 / 13;
-            heigh += 0.13;
+            height += 0.13;
         }
 
         scene.lights.add(new DirectionalLight(new Color(white).scale(1.6), new Vector(1, -0.3, 0)));
-        ImageWriter imageWriter = new ImageWriter("MyPictur", 600, 600);
+        ImageWriter imageWriter = new ImageWriter("MyPictureTest", 10000, 10000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //

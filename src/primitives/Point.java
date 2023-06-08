@@ -4,6 +4,8 @@ package primitives;
  * Class for representing a point in space
  */
 public class Point {
+    /** Point constant for the center of coordinates */
+    public static final Point ZERO = new Point(0,0,0);
     /**
      * An instance of Double3 that contains the coordinate values
      */
@@ -37,7 +39,7 @@ public class Point {
     /**
      * Adding a vector to a point – returns a new point
      *
-     * @param v to addition
+     * @param v vector to add
      * @return returns a new point
      */
     public Point add(Vector v) {
