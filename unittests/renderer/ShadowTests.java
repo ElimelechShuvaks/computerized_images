@@ -27,6 +27,9 @@ public class ShadowTests {
 
     /**
      * Helper function for the tests in this module
+     * @param pictName picture name
+     * @param triangle the triangle
+     * @param spotLocation spot location
      */
     void sphereTriangleHelper(String pictName, Triangle triangle, Point spotLocation) {
         scene.geometries.add(sphere, triangle.setEmission(new Color(BLUE)).setMaterial(trMaterial));

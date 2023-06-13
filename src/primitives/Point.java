@@ -13,6 +13,9 @@ public class Point {
 
     /**
      * Constructor with 3 parameters.
+     * @param x x cordinate
+     * @param y y cordinate
+     * @param z z cordinate
      */
     public Point(double x, double y, double z) {
         this.xyz = new Double3(x, y, z);
@@ -20,6 +23,7 @@ public class Point {
 
     /**
      * Constructor with 1 parameter.
+     * @param xyz the x, y, z
      */
     Point(Double3 xyz) {
         this.xyz = xyz;

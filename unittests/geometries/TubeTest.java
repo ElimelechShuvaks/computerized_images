@@ -12,7 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class TubeTest {
 
-
+    /**
+     * Test method for {@link Tube#getNormal(Point)}.
+     */
     @Test
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============
