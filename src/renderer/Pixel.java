@@ -9,18 +9,18 @@ record Pixel(int row, int col) {
 
     private static int maxRows = 0;
     private static int maxCols = 0;
-    private static long totalPixels = 0l;
+    private static long totalPixels = 0L;
 
     private static volatile int cRow = 0;
     private static volatile int cCol = -1;
-    private static volatile long pixels = 0l;
+    private static volatile long pixels = 0L;
     private static volatile int lastPrinted = 0;
 
     private static boolean print = false;
-    private static long printInterval = 100l;
+    private static long printInterval = 100L;
     private static final String PRINT_FORMAT = "%5.1f%%\r";
-    private static Object mutexNext = new Object();
-    private static Object mutexPixels = new Object();
+    private static final Object mutexNext = new Object();
+    private static final Object mutexPixels = new Object();
 
     /** Initialize pixel data for multi-threading
      * @param maxRows  the amount of pixel rows
@@ -63,7 +63,7 @@ record Pixel(int row, int col) {
         synchronized (mutexPixels) {
             ++pixels;
             if (print) {
-                percentage = (int) (1000l * pixels / totalPixels);
+                percentage = (int) (1000L * pixels / totalPixels);
                 if (percentage - lastPrinted >= printInterval) {
                     lastPrinted = percentage;
                     flag        = true;
