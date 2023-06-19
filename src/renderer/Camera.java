@@ -7,12 +7,14 @@ import primitives.Vector;
 
 import java.util.MissingResourceException;
 
-import static primitives.Util.*;
+import static primitives.Util.isZero;
 
 /**
  * Represents a camera object
  */
 public class Camera {
+
+    //************* fields ****************
     private final Point position;
     private final Vector vTo;
     private final Vector vUp;
@@ -23,8 +25,11 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
 
+    //************* constructor ****************
+
     /**
      * constructor that build the camera
+     *
      * @param position the position
      * @param vTo      the vTo vector
      * @param vUp      the vUp vector
@@ -39,8 +44,11 @@ public class Camera {
         vRight = vTo.crossProduct(vUp).normalize();
     }
 
+    //************* getters ****************
+
     /**
      * function that gets the position of the camera
+     *
      * @return the position
      */
     @SuppressWarnings("unused")
@@ -50,6 +58,7 @@ public class Camera {
 
     /**
      * function that gets the vTo vector
+     *
      * @return the vTo vector
      */
     @SuppressWarnings("unused")
@@ -59,6 +68,7 @@ public class Camera {
 
     /**
      * function that gets the vUp vector
+     *
      * @return the vUp vector
      */
     @SuppressWarnings("unused")
@@ -68,6 +78,7 @@ public class Camera {
 
     /**
      * function that gets the vRight vector
+     *
      * @return the vRight vector
      */
     @SuppressWarnings("unused")
@@ -77,6 +88,7 @@ public class Camera {
 
     /**
      * function that gets the distance
+     *
      * @return the distance
      */
     @SuppressWarnings("unused")
@@ -86,6 +98,7 @@ public class Camera {
 
     /**
      * function that gets the height
+     *
      * @return the height
      */
     @SuppressWarnings("unused")
@@ -95,6 +108,7 @@ public class Camera {
 
     /**
      * function that gets the width
+     *
      * @return the width
      */
     @SuppressWarnings("unused")
@@ -102,8 +116,11 @@ public class Camera {
         return width;
     }
 
+    //************* setters ****************
+
     /**
      * Sets the image writer for the camera.
+     *
      * @param imageWriter the image writer
      * @return the camera
      */
@@ -114,6 +131,7 @@ public class Camera {
 
     /**
      * Sets the ray tracer for the camera.
+     *
      * @param rayTracer the ray tracer
      * @return the camera
      */
@@ -124,6 +142,7 @@ public class Camera {
 
     /**
      * function that sets the width and height
+     *
      * @param width  width of the View Plane
      * @param height height of the View Plane
      * @return the camera
@@ -136,6 +155,7 @@ public class Camera {
 
     /**
      * function that sets the distance
+     *
      * @param distance distance from the Camera to the View Plane
      * @return the camera
      */
@@ -146,6 +166,7 @@ public class Camera {
 
     /**
      * function that gets the ray from the camera to the point
+     *
      * @param nX the x resolution
      * @param nY the y resolution
      * @param i  the x coordinate
@@ -160,37 +181,54 @@ public class Camera {
 
         double yI = -(i - (nY - 1d) / 2) * rY;
         double xJ = (j - (nX - 1d) / 2) * rX;
-        Point rayEndPoint  = pC;
+        Point rayEndPoint = pC;
 
         if (!isZero(yI))
-            rayEndPoint  = rayEndPoint .add(vUp.scale(yI));
+            rayEndPoint = rayEndPoint.add(vUp.scale(yI));
         if (!isZero(xJ))
-            rayEndPoint  = rayEndPoint .add(vRight.scale(xJ));
+            rayEndPoint = rayEndPoint.add(vRight.scale(xJ));
 
-        return new Ray(position, rayEndPoint .subtract(position));
+        return new Ray(position, rayEndPoint.subtract(position));
     }
 
     /**
-     * Renders the image by casting rays from the camera to the view plane and
-     * storing the resulting colors in the image writer.
-     * @throws MissingResourceException if the camera or image writer is not initialized
+     * loop over all pixels on vp
+     * construct ray
+     * find intersections
+     * calculate the color
+     * and write to image
      */
-    public Camera renderImage(){
-        if(position == null || vTo == null || vUp == null || vRight == null || distance == 0 || height == 0 || width == 0 || imageWriter == null || rayTracer == null)
+    public Camera renderImage() {
+        if (position == null || vTo == null || vUp == null || vRight == null || distance == 0 || height == 0 || width == 0 || imageWriter == null || rayTracer == null)
             throw new MissingResourceException("", "", "Camera is not initialized");
-        int nX = imageWriter.getNx();
-        int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; i++) {
-            for (int j = 0; j < nY; j++) {
-                imageWriter.writePixel(j, i, this.castRay(nX, nY, i, j));
-            }
+        int nY = this.imageWriter.getNy();
+        int nX = this.imageWriter.getNx();
+        double printInterval = 0.1;
+        int threadsCount = 1;
+
+        Pixel.initialize(nY, nX, printInterval);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                Pixel pixel = Pixel.nextPixel();
+                while (pixel != null) {
+                    imageWriter.writePixel(pixel.col(), pixel.row(), castRay(nX, nY, pixel.col(), pixel.row()));
+                    pixel = Pixel.nextPixel();
+                }
+            }).start();
         }
+        Pixel.pixelDone();
+//        for (int i = 0; i < nX; i++) {
+//            for (int j = 0; j < nY; j++) {
+//                imageWriter.writePixel(j, i, this.castRay(nX, nY, j, i));
+//            }
+//        }
         return this;
     }
 
     /**
      * Prints a grid on the image writer by writing pixels of the specified color
      * at regular intervals.
+     *
      * @param interval the interval at which to place the grid lines
      * @param color    the color of the grid lines
      * @throws MissingResourceException if the image writer is not initialized
@@ -208,9 +246,9 @@ public class Camera {
         }
     }
 
-
     /**
      * Writes the rendered image to the output file.
+     *
      * @throws MissingResourceException if the image writer is not initialized
      */
     public void writeToImage() {
@@ -219,9 +257,19 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
-    private Color castRay(int nX, int nY, int i, int j){
-        Ray tempRay = constructRay(nX, nY, j, i);
-        return rayTracer.traceRay(tempRay);
+    //
 
+    /**
+     * function that casts ray and returns color
+     *
+     * @param nX the x resolution
+     * @param nY the y resolution
+     * @param j  the x coordinate
+     * @param i  the y coordinate
+     * @return the color
+     */
+    private Color castRay(int nX, int nY, int j, int i) {
+        return rayTracer.traceRay(constructRay(nX, nY, j, i));
     }
+
 }
