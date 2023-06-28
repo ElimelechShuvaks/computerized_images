@@ -5,8 +5,11 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 /**
@@ -24,6 +27,15 @@ public class Camera {
     private double width;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    boolean isMultyThreding = false;
+    int threadsCount = 1;
+    private PixelManager pixelManager;
+
+    // --------- fields DOF -------
+    private boolean isDepthOfField = false;
+    private double focalDistance = 0;
+    private int numOfRays = 1;
+    private double apertureSize = 1;
 
     //************* constructor ****************
 
@@ -165,6 +177,34 @@ public class Camera {
     }
 
     /**
+     * setter for Multy Threding
+     *
+     * @param isMultyThreding boolean for on/off the MultyThreding
+     * @param threadsCount    count of threds
+     * @return the camera
+     */
+    public Camera setMultyThreding(boolean isMultyThreding, int threadsCount) {
+        this.isMultyThreding = isMultyThreding;
+        this.threadsCount = threadsCount;
+        return this;
+    }
+
+    /**
+     * @param isDepthOfField isDepthOfField on/off
+     * @param focalDistance distance of the focus
+     * @param apertureSize the aperture size
+     * @param numOfRays the num of rays to create
+     * @return the camera
+     */
+    public Camera setDepthOfFiled(boolean isDepthOfField, double focalDistance, double apertureSize, int numOfRays) {
+        this.isDepthOfField = isDepthOfField;
+        this.focalDistance = focalDistance;
+        this.apertureSize = apertureSize;
+        this.numOfRays = numOfRays;
+        return this;
+    }
+
+    /**
      * function that gets the ray from the camera to the point
      *
      * @param nX the x resolution
@@ -204,24 +244,30 @@ public class Camera {
         int nY = this.imageWriter.getNy();
         int nX = this.imageWriter.getNx();
         double printInterval = 0.1;
-        int threadsCount = 1;
 
-        Pixel.initialize(nY, nX, printInterval);
-        while (threadsCount-- > 0) {
-            new Thread(() -> {
-                Pixel pixel = Pixel.nextPixel();
-                while (pixel != null) {
-                    imageWriter.writePixel(pixel.col(), pixel.row(), castRay(nX, nY, pixel.col(), pixel.row()));
-                    pixel = Pixel.nextPixel();
+        this.pixelManager = new PixelManager(nY, nX, printInterval);
+
+        if (threadsCount > 0) {
+            List<Thread> threads = new LinkedList<>();
+            while (threadsCount-- > 0) {
+                threads.add(new Thread(() -> {
+                    PixelManager.Pixel pixel;
+                    while ((pixel = pixelManager.nextPixel()) != null)
+                        castRay(nX, nY, pixel.col(), pixel.row());
+                }));
+            }
+
+            // Wait for all threads to finish
+            for (Thread thread : threads) thread.start();
+            for (Thread thread : threads)
+                try {
+                    thread.join();
+                } catch (InterruptedException ignored) {
                 }
-            }).start();
-        }
-        Pixel.pixelDone();
-//        for (int i = 0; i < nX; i++) {
-//            for (int j = 0; j < nY; j++) {
-//                imageWriter.writePixel(j, i, this.castRay(nX, nY, j, i));
-//            }
-//        }
+        } else
+            for (int i = 0; i < nX; i++)
+                for (int j = 0; j < nY; j++) this.castRay(nX, nY, j, i);
+
         return this;
     }
 
@@ -257,8 +303,6 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
-    //
-
     /**
      * function that casts ray and returns color
      *
@@ -266,10 +310,50 @@ public class Camera {
      * @param nY the y resolution
      * @param j  the x coordinate
      * @param i  the y coordinate
-     * @return the color
      */
-    private Color castRay(int nX, int nY, int j, int i) {
-        return rayTracer.traceRay(constructRay(nX, nY, j, i));
+    private void castRay(int nX, int nY, int j, int i) {
+        Color color = Color.BLACK;
+        if (!isDepthOfField)
+            color = rayTracer.traceRay(constructRay(nX, nY, j, i));
+        else {
+            List<Ray> rays = constructRaysDof(nX, nY, j, i);
+            for (Ray ray : rays)
+                color = color.add(this.rayTracer.traceRay(ray));
+            color = color.reduce(rays.size());
+
+        }
+        imageWriter.writePixel(j, i, color);
+        pixelManager.pixelDone();
     }
 
+    /**
+     * this function gets the view plane size and a selected pixel,
+     * and return the rays from the view plane which intersects the focal plane
+     *
+     * @param nX - amount of columns in view plane (number of pixels)
+     * @param nY - amount of rows in view plane (number of pixels)
+     * @param j  - X's index
+     * @param i  - Y's index
+     * @return - the list of rays which goes from the pixel through the focal plane
+     */
+    public List<Ray> constructRaysDof(int nX, int nY, int j, int i) {
+        BlackBoard blackBoard = new BlackBoard();
+        // the returned list of rays
+        List<Ray> rays = new LinkedList<>();
+        // add the center ray to the list
+        Ray centerRay = constructRay(nX, nY, j, i);
+        // calculate the actual size of a pixel
+        // pixel height is the division of the view plane height in the number of rows of pixels
+        double pixelHeight = alignZero(height / nY); // Ry = h/Ny
+        // pixel width is the division of the view plane width in the number of columns of pixels
+        double pixelWidth = alignZero(width / nX); // Rx = w/Nx
+        if (numOfRays > 1) {
+            // apertureSize is the value of how many pixels it spreads on
+            double apertureRadius = Math.sqrt(apertureSize * (pixelHeight * pixelWidth)) / 2d;
+            rays.addAll(blackBoard.raysInGrid(centerRay, vUp, vRight, apertureRadius, numOfRays, focalDistance));
+        } else
+            rays.add(centerRay);
+
+        return rays;
+    }
 }

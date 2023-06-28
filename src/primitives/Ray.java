@@ -1,9 +1,7 @@
 package primitives;
 
 import geometries.Intersectable.GeoPoint;
-
 import java.util.List;
-
 import static primitives.Util.isZero;
 
 /**
@@ -99,7 +97,6 @@ public class Ray {
         }
         return closest;
     }
-
 
     @Override
     public boolean equals(Object obj) {
